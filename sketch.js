@@ -1,9 +1,10 @@
 let player, skatewheels, obsstacle, enemy,floor;
 let score = 0;
-let platform;
+let sound1;
 let gameover;
 let goalPost;
 let start;
+let ganestate;
 let hasGameBegun = false;
 let speed = 5;
 let myFont;
@@ -15,6 +16,7 @@ let state = 0;
 
 function preload(){
   myFont = loadFont("Khand-SemiBold.ttf");
+  sound1 = loadSound("Bridge Island Zone Act 1.mp3")
 }
 
 function setup() {
@@ -33,8 +35,12 @@ player.mass=3;
 player.rotationlock =true;
 player.friction=0;
 
-skatewheels = new Sprite(500,220)
+skatewheels = new Sprite()
 skatewheels.collider = "static";
+skatewheels.diameter = 20
+skatewheels.img = "skatewheels.png";
+skatewheels.x = 560;
+skatewheels.y = 340;
 
 floor = new Sprite(550,320,1000,40, 'static');
 
@@ -71,7 +77,7 @@ goalPost.width = 290
 
 
 function draw() {
-  
+  text(skatewheels,400,30)
 stateNum();
 jump();
 
@@ -108,10 +114,13 @@ function playGame(){
   background(bg)
   player.vel.x = speed;
   camera.x = player.x;
+  player.overlaps(skatewheels,collectSkatewheels)
+  sound1.play()
 }
 
 function collectSkatewheels(player,skatewheels){
-  skatewheels.remove()
+  skatewheels.remove();
+	score++;
 }
 
 function gameOver(){
@@ -134,6 +143,7 @@ function goal(){
  // }
 }
 
+
 function jump(){
   if(keyIsDown(32)){
     player.img = "charge.png";
@@ -143,5 +153,3 @@ function jump(){
   }
 
 }    
-
-
